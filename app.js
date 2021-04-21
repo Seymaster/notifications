@@ -6,6 +6,7 @@ const logger  = require("morgan");
 const cors    = require("cors");
 const mongoose  = require("mongoose");
 const config   = require("./config/mongo");
+const notifRouter = require("./routes/notification")
 
 
 mongoose.Promise = global.Promise;
@@ -17,7 +18,7 @@ app.listen(PORT,(err)=>{
 app.use(cors({origin: "*"}));
 app.use(logger("dev"));
 app.use(express.json());
-
+app.use("/api/v1", notifRouter);
 
 
 

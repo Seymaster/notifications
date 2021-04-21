@@ -1,4 +1,5 @@
 const NotificationRepo = require("../models/NotificationRepo");
+const PushNotifaction = require("./pushnotif");
 
 exports.createNotifs = async (req,res,next)=>{
     let {channel, key, message} = req.body
@@ -27,3 +28,18 @@ exports.createNotifs = async (req,res,next)=>{
         }
     }
 }
+
+
+exports.sendNotifs = async (req,res,next)=>{
+    const {key, adapter} = req.params;
+    notif = await NotificationRepo.all({key:key})
+    if(!notif){
+        return res.status(404).send({
+            status:404,
+            message: "No key that matches"
+         })
+    }
+    
+
+}
+
