@@ -8,7 +8,7 @@ const redirect_url = process.env.stagingRedirect
 
 // Email Notification API
 async function sendMail(recipient){
-    var raw = JSON.stringify({
+    let raw = JSON.stringify({
     "from": "no-reply@owambe.ng",
     "subject": "The event has started: ",
     "recipients": [
@@ -41,7 +41,7 @@ async function sendMail(recipient){
     // },
 });
 
-    var requestOptions = {
+    let requestOptions = {
     method: 'POST',
     headers:  {
                 "Accept": "application/json",
@@ -58,6 +58,63 @@ async function sendMail(recipient){
     .catch(error => console.log('error', error));
 }
 
+async function smsConfiguration(){
+let raw = JSON.stringify({
+	"provider":"hollatags",
+	"senderId":"SENDER_NAME",
+	"configType":"custom",
+	"username":"usernname",
+	"password":"password",
+	"webhook":"https://webhook.site/9a0c3197-d850-4282-9bfd-b6f09ad65b5d"
+    })
 
+    let requestOptions = {
+        method: 'POST',
+        headers:  {
+                    "Accept": "application/json",
+                    "Content-Type":"application/json",
+                    "client-id": clientId,
+                    "client-secret": clientSecret
+                },
+        body: raw,
+        redirect: 'follow'
+        };
+    await fetch(`${baseUrl}/notifications/v1/sms/configurations`,requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+}
+
+async function sendSms(recipient){
+    let raw = JSON.stringify({
+    "recipients": [
+        recipient
+    ],
+    "provider": "multitexter",
+    "message": "Lorem ispum is another content.",
+    "sender": "Cxchange"
+});
+
+    let requestOptions = {
+    method: 'POST',
+    headers:  {
+                "Accept": "application/json",
+                "Content-Type":"application/json",
+                "client-id": clientId,
+                "client-secret": clientSecret
+            },
+    body: raw,
+    redirect: 'follow'
+    };
+    await fetch(`${baseUrl}/notifications/v1/sms`,requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+}
+
+// let recipient = "08132461973"
+// smsConfiguration()
+// .then(data=>console.log(data))
+// .catch(err=> console.log(err))
 
 module.exports = { sendMail }

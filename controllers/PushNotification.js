@@ -9,8 +9,7 @@ class PushNotifaction {
     send(recipient, notification){
         this.notifs.recipient = recipient
         this.notifs.notification = notification
-        let mail = await sendMail(recipient)
-        return mail
+        return notifs
     }
 }
 
